@@ -16,6 +16,10 @@ public class Immortal extends Thread {
     private final String name;
 
     private final Random r = new Random(System.currentTimeMillis());
+    
+    private boolean locked=false;
+    
+    private ControlFrame k;
 
 
     public Immortal(String name, List<Immortal> immortalsPopulation, int health, int defaultDamageValue, ImmortalUpdateReportCallback ucb) {
@@ -79,6 +83,17 @@ public class Immortal extends Thread {
     public String toString() {
 
         return name + "[" + health + "]";
+    }
+    
+    public void bloquear(){
+        locked=true;
+    }
+    
+    public void desbloquear(){
+        synchronized(k){
+            k.notify();
+        }
+        locked= false;
     }
 
 }
